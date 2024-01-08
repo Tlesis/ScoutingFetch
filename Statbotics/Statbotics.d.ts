@@ -178,3 +178,32 @@ interface StatTeamYear {
     district_team_count:     number | null;
 }
 /****************************************/
+interface StatEvent {
+    key:          string;
+    year:         number;
+    name:         string;
+    time:         number;
+    state:        string | null;
+    country:      string;
+    district:     string | null;
+    start_date:   Date;
+    end_date:     Date;
+    type:         number;
+    week:         number;
+    offseason:    boolean;
+    video:        string | null;
+    status:       string;
+    qual_matches: number;
+    epa_max:      number;
+    epa_top8:     number;
+    epa_top24:    number;
+    epa_mean:     number;
+    epa_sd:       number;
+    epa_acc:      number | null;
+    epa_mse:      number | null;
+    rp_1_acc:     number | null;
+    rp_1_mse:     number | null;
+    rp_2_acc:     number | null;
+    rp_2_mse:     number | null;
+}
+/****************************************/

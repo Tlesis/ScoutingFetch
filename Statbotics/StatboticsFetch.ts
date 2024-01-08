@@ -2,6 +2,7 @@ import { APIs, Fetch } from "../BaseFetch";
 
 export class StatboticsFetch extends Fetch {
 
+
     constructor(year: number, event: string) {
         super(year, event);
     }
@@ -23,7 +24,7 @@ export class StatboticsFetch extends Fetch {
 
     /**
      * /v2/year/{year}
-     * @param year optional year the of requested season
+     * @param year optional year of the requested season
      * @returns Get a single Year object containing EPA percentiles, Week 1 match score statistics, and prediction accuracy
      */
     public async year(year?: number) {
@@ -111,7 +112,7 @@ export class StatboticsFetch extends Fetch {
     /**
      * /v2/team_year/{team}/{year}
      * @param team the team number for the requested team
-     * @param year optional year the of requested season
+     * @param year optional year of the requested season
      * @returns Get a single TeamYear object containing EPA summary, winrates, and location rankings
      */
     public async teamYear(team: number, year?: number) {
@@ -132,7 +133,7 @@ export class StatboticsFetch extends Fetch {
     /**
      * /v2/team_years/year/{year}/district/{district}
      * @param district district that the teams are apart of - can use `FRC.DistrictCode` enum
-     * @param year optional year the of requested season
+     * @param year optional year of the requested season
      * @returns Get a list of TeamYear objects from a single district
      */
     public async teamYearsDistrict(district: FRC.DistrictCode | string, year?: number) {
@@ -143,7 +144,7 @@ export class StatboticsFetch extends Fetch {
     /**
      * /v2/team_years/year/{year}/state/{state}
      * @param state state the teams are based in (if in the USA) - can use `FRC.States` enum
-     * @param year optional year the of requested season
+     * @param year optional year of the requested season
      * @returns Get a list of TeamYear objects from a single state
      */
     public async teamYearsState(state: FRC.States | string, year?: number) {
@@ -155,7 +156,7 @@ export class StatboticsFetch extends Fetch {
      * 
      * @param options all may be left unfilled - any contradictions will cause nothing to be returned
      * @param options.team the team number for the requested team
-     * @param options.year optional year the of requested season
+     * @param options.year year the of requested season
      * @param options.country country that the teams are based in
      * @param options.district district that the teams are apart of - can use `FRC.DistrictCode` enum
      * @param options.state state the teams are based in (if in the USA) - can use `FRC.States` enum
@@ -178,6 +179,102 @@ export class StatboticsFetch extends Fetch {
     }) {
         return this.stat("team_years", options)
             .then((res) => res.json() as Promise<StatTeamYear[]>);
+    }
+
+    /**
+     * /v2/event/{event}
+     * @param eventKey TBA-style Event Key, eg `2016nytr`
+     * @returns Get a single Event object containing event location, dates, EPA stats, prediction stats
+     */
+    public async event(eventKey?: string) {
+        return this.stat(`event/${eventKey ?? this._eventkey}`)
+            .then((res) => res.json() as Promise<StatEvent>);
+    }
+
+    /**
+     * /v2/events/year/{year}
+     * @param year optional year of the requested season
+     * @returns Get a list of Event objects for a single year
+     */
+    public async eventsYear(year?: number) {
+        return this.stat(`events/year/${year ?? this._year}`)
+            .then((res) => res.json() as Promise<StatEvent[]>);
+    }
+
+
+    /**
+     * /v2/events/year/{year}/district/{district}
+     * @param district district that the events are apart of - can use `FRC.DistrictCode` enum
+     * @param year optional year of the requested season
+     * @returns Get a list of Event objects for a single (year, district) pair
+     */
+    public async eventsYearDistrict(district: FRC.DistrictCode | string, year?: number) {
+        return this.stat(`events/year/${year ?? this._year}/district/${district}`)
+            .then((res) => res.json() as Promise<StatEvent[]>);
+    }
+
+    /**
+     * /v2/events/year/{year}/state/{state}
+     * @param state state that the events are in - can use `FRC.State` enum
+     * @param year optional year of the requested season
+     * @returns Get a list of Event objects for a single (year, state) pair
+     */
+    public async eventsYearState(state: FRC.States | string, year?: number) {
+        return this.stat(`events/year/${year ?? this._year}/state/${state}`)
+            .then((res) => res.json() as Promise<StatEvent[]>);
+    }
+
+    /**
+     * /v2/events/district/{district}
+     * @param district district that the events are apart of - can use `FRC.DistrictCode` enum
+     * @param year optional year of the requested season
+     * @returns Get a list of Event objects for a single district
+     */
+    public async eventsDistrict(district: FRC.DistrictCode | string) {
+        return this.stat(`events/district/${district}`)
+            .then((res) => res.json() as Promise<StatEvent[]>);
+    }
+
+    /**
+     * /v2/events/state/{state}
+     * @param state state that the events are in - can use `FRC.State` enum
+     * @param year optional year of the requested season
+     * @returns Get a list of Event objects for a single state
+     */
+    public async eventsState(state: FRC.States | string, year?: number) {
+        return this.stat(`events/state/${state}`)
+            .then((res) => res.json() as Promise<StatEvent[]>);
+    }
+
+    /**
+     * /v2/events
+     * @param options all may be left unfilled - any contradictions will cause nothing to be returned
+     * @param options.year year the of requested season
+     * @param options.country country that the events are in
+     * @param options.district district that the events are in - can use `FRC.DistrictCode` enum
+     * @param options.state state the events are in (if in the USA) - can use `FRC.States` enum
+     * @param options.week week the events take place in
+     * @param options.offseason whether or not the events are an offseason event
+     * @param options.ascending from what i can tell this does nothing? - default false
+     * @param options.limit amount of teams that should be returned - default 100
+     * @param options.offset how far the `limit` "window" should be moved down
+     * @returns Get a list of all Event objects with optional filters
+     */
+    public async events(options?: {
+        year?: number,
+        country?: string,
+        district?: FRC.DistrictCode | string,
+        state?: FRC.States | string,
+        type?: number,
+        week?: number,
+        offseason?: boolean,
+        metric?: string,
+        ascending?: boolean,
+        limit?: number,
+        offset?: number
+    }) {
+        return this.stat("events")
+            .then((res) => res.json() as Promise<StatEvent[]>);
     }
 
     /************************** END OF Statbotics REST API Wrappers **************************/

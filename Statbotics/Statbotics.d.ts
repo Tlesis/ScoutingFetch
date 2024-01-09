@@ -207,3 +207,62 @@ interface StatEvent {
     rp_2_mse:     number | null;
 }
 /****************************************/
+interface StatTeamEvent {
+    team:                     number;
+    year:                     number;
+    event:                    string;
+    offseason:                boolean;
+    team_name:                string;
+    event_name:               string;
+    state:                    string;
+    country:                  string;
+    district:                 string | null;
+    type:                     number;
+    week:                     number;
+    status:                   string;
+    first_event:              boolean;
+    epa_start:                number;
+    epa_pre_playoffs:         number;
+    epa_end:                  number;
+    epa_mean:                 number;
+    epa_max:                  number;
+    epa_diff:                 number;
+    auto_epa_start:           number;
+    auto_epa_pre_playoffs:    number;
+    auto_epa_end:             number;
+    auto_epa_mean:            number;
+    auto_epa_max:             number;
+    teleop_epa_start:         number;
+    teleop_epa_pre_playoffs:  number;
+    teleop_epa_end:           number;
+    teleop_epa_mean:          number;
+    teleop_epa_max:           number;
+    endgame_epa_start:        number;
+    endgame_epa_pre_playoffs: number;
+    endgame_epa_end:          number;
+    endgame_epa_mean:         number;
+    endgame_epa_max:          number;
+    rp_1_epa_start:           number;
+    rp_1_epa_end:             number;
+    rp_1_epa_mean:            number;
+    rp_1_epa_max:             number;
+    rp_2_epa_start:           number;
+    rp_2_epa_end:             number;
+    rp_2_epa_mean:            number;
+    rp_2_epa_max:             number;
+    wins:                     number;
+    losses:                   number;
+    ties:                     number;
+    count:                    number;
+    winrate:                  number;
+    qual_wins:                number;
+    qual_losses:              number;
+    qual_ties:                number;
+    qual_count:               number;
+    qual_winrate:             number;
+    rps:                      number;
+    rps_per_match:            number;
+    rank:                     number;
+    num_teams:                number;
+}
+/****************************************/

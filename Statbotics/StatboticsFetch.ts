@@ -215,7 +215,7 @@ export class StatboticsFetch extends Fetch {
 
     /**
      * /v2/events/year/{year}/state/{state}
-     * @param state state that the events are in - can use `FRC.State` enum
+     * @param state state that the events are in - can use `FRC.States` enum
      * @param year optional year of the requested season
      * @returns Get a list of Event objects for a single (year, state) pair
      */
@@ -237,7 +237,7 @@ export class StatboticsFetch extends Fetch {
 
     /**
      * /v2/events/state/{state}
-     * @param state state that the events are in - can use `FRC.State` enum
+     * @param state state that the events are in - can use `FRC.States` enum
      * @param year optional year of the requested season
      * @returns Get a list of Event objects for a single state
      */
@@ -253,8 +253,10 @@ export class StatboticsFetch extends Fetch {
      * @param options.country country that the events are in
      * @param options.district district that the events are in - can use `FRC.DistrictCode` enum
      * @param options.state state the events are in (if in the USA) - can use `FRC.States` enum
+     * @param options.type 
      * @param options.week week the events take place in
      * @param options.offseason whether or not the events are an offseason event
+     * @param options.metric idk what this means
      * @param options.ascending from what i can tell this does nothing? - default false
      * @param options.limit amount of teams that should be returned - default 100
      * @param options.offset how far the `limit` "window" should be moved down
@@ -273,9 +275,109 @@ export class StatboticsFetch extends Fetch {
         limit?: number,
         offset?: number
     }) {
-        return this.stat("events")
+        return this.stat("events", options)
             .then((res) => res.json() as Promise<StatEvent[]>);
     }
 
+    /**
+     * /v2/team_event/{team}/{event}
+     * @param team the team number for the requested team
+     * @param eventKey optional TBA-style Event Key, eg `2016nytr`
+     * @returns Get a single Team Event object containing event metadata, EPA statistics, and winrate
+     */
+    public async teamEvent(team: number, eventKey?: string) {
+        return this.stat(`team_event/${team}/${eventKey ?? this._eventkey}`)
+            .then((res) => res.json() as Promise<StatTeamEvent>);
+    }
+
+    /**
+     * /v2/team_events/team/{team}
+     * @param team the team number for the requested team
+     * @returns Get a list of Team Event objects for a single team
+     */
+    public async teamEventsTeam(team: number) {
+        return this.stat(`team_events/team/${team}`)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
+
+    /**
+     * 
+     * @param team the team number for the requested team
+     * @param year optional year the of requested season
+     * @returns Get a list of Team Event objects for a single team and year
+     */
+    public async teamEventsTeamTear(team: number, year?: number) {
+        return this.stat(`team_events/team/${team}/year/${year ?? this._year}`)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
+
+    /**
+     * /v2/team_events/event/{event}
+     * @param eventKey optional TBA-style Event Key, eg `2016nytr`
+     * @returns Get a list of Team Event objects for a single event
+     */
+    public async teamEventsEvent(eventKey?: string) {
+        return this.stat(`team_events/event/${eventKey ?? this._eventkey}`)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
+
+    /**
+     * /v2/team_events/year/{year}/district/{district}
+     * @param district district that the events are in - can use `FRC.DistrictCode` enum
+     * @param year optional year the of requested season
+     * @returns Get a list of Team Event objects for a single year and district
+     */
+    public async teamEventsYearDistrict(district: FRC.DistrictCode | string, year?: number) {
+        return this.stat(`team_events/year/${year ?? this._year}/district/${district}`)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
+
+    /**
+     * /v2/team_events/year/{year}/state/{state}
+     * @param state state that the events are in - can use `FRC.States` enum
+     * @param year optional year the of requested season
+     * @returns Get a list of Team Event objects for a single year and state
+     */
+    public async teamEventsYearState(state: FRC.States | string, year?: number) {
+        return this.stat(`team_events/year/${year ?? this._year}/state/${state}`)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
+
+    /**
+     * /v2/team_events
+     * @param options all may be left unfilled - any contradictions will cause nothing to be returned
+     * @param options.team the team number for the requested team
+     * @param options.year optional year the of requested season
+     * @param options.eventKey TBA-style Event Key, eg `2016nytr`
+     * @param options.country country that the events are in
+     * @param options.district district that the events are in - can use `FRC.DistrictCode` enum
+     * @param options.state state that the events are in - can use `FRC.States` enum
+     * @param options.type 
+     * @param options.week the events take place in
+     * @param options.offseason whether or not the events are an offseason event
+     * @param options.metric idk what this means
+     * @param options.ascending from what i can tell this does nothing? - default false
+     * @param options.limit amount of teams that should be returned - default 100
+     * @param options.offset how far the `limit` "window" should be moved down
+     * @returns Get a list of all Team Event objects with optional filters
+     */
+    public async teamEvents(options?: {
+        team?: number,
+        year?: number,
+        eventKey?: string,
+        country?: string,
+        district?: FRC.DistrictCode | string,
+        state?: FRC.States | string,
+        type?: number,
+        week?: number
+        offseason?: boolean,
+        metric?: string,
+        ascending?: boolean,
+        limit?: number,
+        offset?: number
+    }) {
+        return this.stat("team_events", options)
+            .then((res) => res.json() as Promise<StatTeamEvent[]>);
+    }
     /************************** END OF Statbotics REST API Wrappers **************************/
 }

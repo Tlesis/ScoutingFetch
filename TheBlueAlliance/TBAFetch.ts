@@ -97,7 +97,7 @@ export class TBAFetch extends Fetch {
      */
     public async teamEventStatuses(teamKey: string, year?: number) {
         return this.tba(`team/${teamKey}/events/${year ?? this._year}/statuses`)
-            .then((res) => res.json() as Promise<TbaTeamEventStatuses>)
+            .then((res) => res.json() as Promise<TbaTeamEventStatuses>);
     }
 
     /**
@@ -115,7 +115,7 @@ export class TBAFetch extends Fetch {
      * @param year Competition Year (or Season). Must be 4 digits
      * @returns Gets a short-form list of events in the given year
      */
-     public async eventsSimple(year?: number) {
+    public async eventsSimple(year?: number) {
         return this.tba(`events/${year ?? this._year}/simple`)
             .then((res) => res.json() as Promise<TbaEventSimple[]>);
     }
@@ -544,7 +544,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @return Gets a list of Elimination Alliances for the given Event
      */
-    public async eventAlliances(eventKey?: number) {
+    public async eventAlliances(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/alliances`)
             .then((res) => res.json() as Promise<TbaAlliance[]>);
     }
@@ -554,7 +554,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a set of Event OPRs (including OPR, DPR, and CCWM) for the given Event
      */
-    public async eventOprs(eventKey?: number) {
+    public async eventOprs(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/oprs`)
             .then((res) => res.json() as Promise<TbaOprs>);
     }
@@ -564,7 +564,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a list of team rankings for the Event
      */
-    public async eventRankings(eventKey?: number) {
+    public async eventRankings(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/rankings`)
             .then((res) => res.json() as Promise<TbaEventRanking>);
     }
@@ -574,7 +574,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a list of matches for the given event
      */
-    public async eventMatches(eventKey?: number) {
+    public async eventMatches(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/matches`)
             .then((res) => res.json() as Promise<TbaMatch[]>);
     }
@@ -584,7 +584,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a short-form list of matches for the given event
      */
-    public async eventMatchesSimple(eventKey?: number) {
+    public async eventMatchesSimple(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/matches/simple`)
             .then((res) => res.json() as Promise<TbaMatch[]>);
     }
@@ -594,7 +594,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a list of match keys for the given event
      */
-    public async eventMatchesKeys(eventKey?: number) {
+    public async eventMatchesKeys(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/matches/keys`)
             .then((res) => res.json() as Promise<string[]>);
     }
@@ -604,7 +604,7 @@ export class TBAFetch extends Fetch {
      * @param eventKey TBA Event Key, eg `2016nytr`
      * @returns Gets a list of awards from the given event
      */
-    public async eventAwards(eventKey?: number) {
+    public async eventAwards(eventKey?: string) {
         return this.tba(`event/${eventKey ?? this._eventkey}/awards`)
             .then((res) => res.json() as Promise<TbaAward[]>);
     }

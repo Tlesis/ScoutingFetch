@@ -15,13 +15,13 @@ export enum APIs {
 export class Fetch {
     protected _year: number;
     protected _event: string;
-    protected _eventkey: string;
+    protected _eventKey: string;
 
     constructor(year: number, event: string) {
         this._year = year;
         this._event = event;
 
-        this._eventkey = `${year}${event}`;
+        this._eventKey = `${year}${event}`;
     }
 
     // helper function to make calls a bit easier

@@ -1,13 +1,24 @@
 import { APIs, Fetch } from "../BaseFetch";
 
+export enum CompLevel {
+    Finals = "f",
+    SemiFinal = "sf",
+    Qualification = "qm"
+}
+
+// FIXME: all methods untested - so... uh... i need to do that :)
 export class StatboticsFetch extends Fetch {
 
+    public static matchIDMaker(info: { level: CompLevel, match: number, finalsNumber?: number}, eventKey: string) {
+        return `${eventKey}_${info.level}${info.finalsNumber}m${info.match}`;
+    }
 
     constructor(year: number, event: string) {
         super(year, event);
     }
 
     private stat(subpath: string, options?: {}) { return Fetch.f(APIs.Statbotics, subpath, options); }
+
 
     /****************************** Statbotics REST API Wrappers ******************************/
     // All functions are worse explained on the Statbotics REST API docs:
@@ -187,7 +198,7 @@ export class StatboticsFetch extends Fetch {
      * @returns Get a single Event object containing event location, dates, EPA stats, prediction stats
      */
     public async event(eventKey?: string) {
-        return this.stat(`event/${eventKey ?? this._eventkey}`)
+        return this.stat(`event/${eventKey ?? this._eventKey}`)
             .then((res) => res.json() as Promise<StatEvent>);
     }
 
@@ -286,7 +297,7 @@ export class StatboticsFetch extends Fetch {
      * @returns Get a single Team Event object containing event metadata, EPA statistics, and winrate
      */
     public async teamEvent(team: number, eventKey?: string) {
-        return this.stat(`team_event/${team}/${eventKey ?? this._eventkey}`)
+        return this.stat(`team_event/${team}/${eventKey ?? this._eventKey}`)
             .then((res) => res.json() as Promise<StatTeamEvent>);
     }
 
@@ -317,7 +328,7 @@ export class StatboticsFetch extends Fetch {
      * @returns Get a list of Team Event objects for a single event
      */
     public async teamEventsEvent(eventKey?: string) {
-        return this.stat(`team_events/event/${eventKey ?? this._eventkey}`)
+        return this.stat(`team_events/event/${eventKey ?? this._eventKey}`)
             .then((res) => res.json() as Promise<StatTeamEvent[]>);
     }
 
@@ -379,5 +390,79 @@ export class StatboticsFetch extends Fetch {
         return this.stat("team_events", options)
             .then((res) => res.json() as Promise<StatTeamEvent[]>);
     }
+
+    /**
+     * /v2/match/{match}
+     * @param match a match key eg. 2019ncwak_f1m1 - can use `StatboticsFetch.matchIDMaker()` to make id
+     * @returns Get a single Match object containing teams, score prediction, and actual results
+     */
+    public async match(match: string) {
+        return this.stat(`match/${match}`)
+            .then((res) => res.json() as Promise<StatMatch>);
+    }
+
+    /**
+     * /v2/matches/event/{event}
+     * @param eventKey TBA-style Event Key, eg `2016nytr`
+     * @returns Get a list of Match objects for a single event
+     */
+    public async matchesEvent(eventKey?: string) {
+        return this.stat(`matches/event/${eventKey ?? this._event}`)
+            .then((res) => res.json() as Promise<StatMatch[]>);
+    }
+
+    /**
+     * /v2/matches/team/{team}/year/{year}
+     * @param team the team number for the requested team
+     * @param year optional year of the requested season
+     * @returns Get a list of Match objects for a single team in a single year
+     */
+    public async matchesTeamYear(team: number, year?: number) {
+        return this.stat(`matches/tean/${team}/year/${year ?? this._year}`)
+            .then((res) => res.json() as Promise<StatMatch[]>);
+    }
+
+    /**
+     * /v2/matches/team/{team}/event/{event}
+     * @param team the team number for the requested team
+     * @param eventKey TBA-style Event Key, eg `2016nytr`
+     * @returns Get a list of Match objects for a single team in a single event
+     */
+    public async matchesTeamEvent(team: number, eventKey?: string) {
+        return this.stat(`matches/tean/${team}/event/${eventKey ?? this._eventKey}`)
+            .then((res) => res.json() as Promise<StatMatch[]>);
+    }
+
+    /**
+     * /v2/matches
+     * @param options all may be left unfilled - any contradictions will cause nothing to be returned
+     * @param options.team the team number for the requested team
+     * @param options.year year of the requested season
+     * @param options.eventKey TBA-style Event Key, eg `2016nytr`
+     * @param options.week the events take place in
+     * @param options.elims if the matches or elimination matches or not
+     * @param options.offseason whether or not the events are an offseason event
+     * @param options.metric idk what this means
+     * @param options.ascending from what i can tell this does nothing? - default false
+     * @param options.limit amount of teams that should be returned - default 100
+     * @param options.offset how far the `limit` "window" should be moved down
+     * @returns Get a list of Matches with optional filters
+     */
+    public async matches(options?: {
+        team?: number,
+        year?: number,
+        eventKey?: string,
+        week?: number,
+        elims?: boolean,
+        offseason?: boolean,
+        metric?: string,
+        ascending?: boolean,
+        limit?: number,
+        offset?: number
+    }) {
+        return this.stat("matches", options)
+            .then((res) => res.json() as Promise<StatMatch[]>);
+    }
+
     /************************** END OF Statbotics REST API Wrappers **************************/
 }

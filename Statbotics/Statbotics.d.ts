@@ -330,3 +330,24 @@ interface StatMatch {
     blue_tiebreaker:      number;
 }
 /****************************************/
+interface StatTeamMatch {
+    team:        number;
+    year:        number;
+    event:       string;
+    match:       string;
+    time:        number;
+    offseason:   boolean;
+    playoff:     boolean;
+    alliance:    string;
+    status:      string;
+    dq:          boolean;
+    surrogate:   boolean;
+    epa:         number;
+    auto_epa:    number;
+    teleop_epa:  number;
+    endgame_epa: number;
+    rp_1_epa:    number;
+    rp_2_epa:    number;
+    post_epa:    number;
+}
+/****************************************/

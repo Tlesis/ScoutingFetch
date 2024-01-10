@@ -1,16 +1,16 @@
 namespace FRC {
     export enum DistrictCode {
-        FMA = "FMA",
-        PNW = "PNW",
-        NE  = "NE",
-        FIN = "FIN",
-        FNC = "FNC",
-        ONT = "ONT",
-        ISR = "ISR",
-        CHS = "CHS",
-        FIT = "FIT",
-        PCH = "PCH",
-        FIM = "FIM",
+        FMA = "fma",
+        PNW = "pnw",
+        NE  = "ne",
+        FIN = "fin",
+        FNC = "fnc",
+        ONT = "ont",
+        ISR = "isr",
+        CHS = "chs",
+        FIT = "fit",
+        PCH = "pch",
+        FIM = "fim",
     }
 
     export enum TournamentType {

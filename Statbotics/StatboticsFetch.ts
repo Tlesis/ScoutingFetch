@@ -6,7 +6,6 @@ export enum CompLevel {
     Qualification = "qm"
 }
 
-// FIXME: all methods untested - so... uh... i need to do that :)
 export class StatboticsFetch extends Fetch {
 
     public static matchIDMaker(info: { level: CompLevel, match: number, finalsNumber?: number}, eventKey: string) {
@@ -312,7 +311,7 @@ export class StatboticsFetch extends Fetch {
     }
 
     /**
-     * 
+     * /v2/team_events/team/{team}/year/{year}
      * @param team the team number for the requested team
      * @param year optional year the of requested season
      * @returns Get a list of Team Event objects for a single team and year
@@ -418,7 +417,7 @@ export class StatboticsFetch extends Fetch {
      * @returns Get a list of Match objects for a single team in a single year
      */
     public async matchesTeamYear(team: number, year?: number) {
-        return this.stat(`matches/tean/${team}/year/${year ?? this._year}`)
+        return this.stat(`matches/team/${team}/year/${year ?? this._year}`)
             .then((res) => res.json() as Promise<StatMatch[]>);
     }
 
@@ -429,7 +428,7 @@ export class StatboticsFetch extends Fetch {
      * @returns Get a list of Match objects for a single team in a single event
      */
     public async matchesTeamEvent(team: number, eventKey?: string) {
-        return this.stat(`matches/tean/${team}/event/${eventKey ?? this._eventKey}`)
+        return this.stat(`matches/team/${team}/event/${eventKey ?? this._eventKey}`)
             .then((res) => res.json() as Promise<StatMatch[]>);
     }
 

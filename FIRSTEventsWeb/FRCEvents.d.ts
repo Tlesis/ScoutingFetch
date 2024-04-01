@@ -136,7 +136,7 @@ interface FrcChampionship {
 }
 /****************************************/
 interface FrcEvents {
-    Events:     Event[];
+    Events:     FrcEvent[];
     eventCount: number;
 }
 
@@ -159,7 +159,7 @@ interface FrcEvent {
 }
 /****************************************/
 interface FrcDistricts {
-    districts:     District[];
+    districts:     FrcDistrict[];
     districtCount: number;
 }
 
@@ -169,7 +169,7 @@ interface FrcDistrict {
 }
 /****************************************/
 interface FrcTeams {
-    teams:          Team[];
+    teams:          FrcTeam[];
     teamCountTotal: number;
     teamCountPage:  number;
     pageCurrent:    number;
@@ -234,7 +234,7 @@ interface FrcListAward {
 }
 /****************************************/
 interface FrcTeamAward {
-    Awards: Award[];
+    Awards: FrcAward[];
 }
 
 interface FrcAwardTeam {
@@ -252,7 +252,7 @@ interface FrcAwardTeam {
 }
 /****************************************/
 interface FrcEventMatchResults {
-    Matches: Match[];
+    Matches: FrcMatch[];
 }
 
 interface FrcMatch {
@@ -267,10 +267,10 @@ interface FrcMatch {
     scoreBlueFinal:  number;
     scoreBlueFoul:   number;
     scoreBlueAuto:   number;
-    teams:           Team[];
+    teams:           FrcMatchTeam[];
 }
 
-interface FrcTeam {
+interface FrcMatchTeam {
     teamNumber: number;
     station:    FrcStation;
     dq:         boolean;
@@ -305,7 +305,7 @@ interface FrcEventRankings {
 }
 /****************************************/
 interface FrcDistrictRankings {
-    districtRanks:     DistrictRank[];
+    districtRanks:     FrcDistrictRank[];
     rankingCountTotal: number;
     rankingCountPage:  number;
     pageCurrent:       number;
